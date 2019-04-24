@@ -27,6 +27,11 @@ USER root
 RUN \
   apt-get update && \
   apt-get install -y chromium-browser
+RUN \
+  chown -R jhipster:jhipster \
+    /home/jhipster/.m2 \
+    /home/jhipster/node \
+    /home/jhipster/node_modules
 
 USER jhipster
 CMD ["tail", "-n", "20", "-f", "/home/jhipster/banner_preto.txt"]
