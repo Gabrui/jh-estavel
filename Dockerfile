@@ -24,6 +24,16 @@ USER root
 RUN \
   apt-get update && \
   apt-get install -y chromium-browser
+RUN \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y postgresql
+RUN \
+  service postgresql start && \
+  su postgres -c "psql --command \"create user sistema login encrypted password 'aEntradaBasicaDoMeuSistemaWeb' noinherit valid until 'infinity';\"" && \
+  su postgres -c "psql --command \" create database sistema with encoding='UTF8' owner=sistema;\""
+RUN \
+  apt-get install sudo && \
+  usermod -aG sudo jhipster && \
+  echo "jhipster ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 USER jhipster
 CMD ["tail", "-n", "20", "-f", "/home/jhipster/banner_preto.txt"]
